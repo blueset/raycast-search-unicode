@@ -20,8 +20,8 @@ export default function Command() {
   const [isLoading, setIsLoading] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [data, setData] = useState<Entry[]>([]);
-  const showEncodingsPref = getPreferenceValues<Preferences.IdentifyUnicode>()
-    .showEncodings;
+  const showEncodingsPref =
+    getPreferenceValues<Preferences.IdentifyUnicode>().showEncodings;
 
   useEffect(() => {
     if (timerRef.current) {
