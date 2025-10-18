@@ -7,16 +7,19 @@ const MAX_RESULTS = 100;
 
 export async function run(argv: string[]): Promise<Entry[]> {
   try {
-    const { execSource, wasmBinary, execPath } = await ensureBinaryAvailable();
+    const binaryInfo = await ensureBinaryAvailable();
 
-    if (execSource === "wasm") {
-      return runWasm(wasmBinary, argv);
+    if (binaryInfo.execSource === "wasm") {
+      return runWasm(binaryInfo.wasmBinary, argv);
     } else if (
-      execSource === "bundled" ||
-      execSource === "path" ||
-      execSource === "custom"
+      binaryInfo.execSource === "bundled" ||
+      binaryInfo.execSource === "path" ||
+      binaryInfo.execSource === "custom"
     ) {
-      if (execSource === "path" || execSource === "custom") {
+      if (
+        binaryInfo.execSource === "path" ||
+        binaryInfo.execSource === "custom"
+      ) {
         // -l is a custom argument that limits results, which may not be supported in user-provided binaries
         const index = argv.indexOf("-l");
         if (index !== -1) {
@@ -25,7 +28,7 @@ export async function run(argv: string[]): Promise<Entry[]> {
       }
 
       return new Promise<Entry[]>((resolve, reject) => {
-        const child = spawn(execPath, argv.slice(1));
+        const child = spawn(binaryInfo.execPath, argv.slice(1));
         let stdout = "";
         let stderr = "";
 
@@ -61,8 +64,8 @@ export async function run(argv: string[]): Promise<Entry[]> {
           if (code !== 0) {
             reject(
               new Error(
-                `Process exited with code ${code}${stderr ? `: ${stderr}` : ""}`,
-              ),
+                `Process exited with code ${code}${stderr ? `: ${stderr}` : ""}`
+              )
             );
             return;
           }
@@ -78,7 +81,7 @@ export async function run(argv: string[]): Promise<Entry[]> {
               lines = lines.slice(0, MAX_RESULTS);
               lines[lines.length - 1] = lines[lines.length - 1].replace(
                 /\},?$/,
-                "}]",
+                "}]"
               );
             }
             const entries: Entry[] = JSON.parse(lines.join("\n"));
@@ -86,8 +89,8 @@ export async function run(argv: string[]): Promise<Entry[]> {
           } catch (error) {
             reject(
               new Error(
-                `Failed to parse JSON output: ${error instanceof Error ? error.message : String(error)}`,
-              ),
+                `Failed to parse JSON output: ${error instanceof Error ? error.message : String(error)}`
+              )
             );
           }
         });
