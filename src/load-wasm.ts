@@ -20,7 +20,9 @@ export async function run(
     };
 
     WebAssembly.instantiate(wasmBinary, go.importObject).then((result) => {
-      go.run((result as unknown as { instance: WebAssembly.Instance }).instance);
+      go.run(
+        (result as unknown as { instance: WebAssembly.Instance }).instance,
+      );
     });
   });
 
