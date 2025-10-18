@@ -5,14 +5,9 @@ import { ensureBinaryAvailable } from "./binary";
 
 const MAX_RESULTS = 100;
 
-
 export async function run(argv: string[]): Promise<Entry[]> {
   try {
-    const {
-      execSource,
-      wasmBinary,
-      execPath,
-    } = await ensureBinaryAvailable();
+    const { execSource, wasmBinary, execPath } = await ensureBinaryAvailable();
 
     if (execSource === "wasm") {
       return runWasm(wasmBinary, argv);
@@ -21,7 +16,6 @@ export async function run(argv: string[]): Promise<Entry[]> {
       execSource === "path" ||
       execSource === "custom"
     ) {
-
       if (execSource === "path" || execSource === "custom") {
         // -l is a custom argument that limits results, which may not be supported in user-provided binaries
         const index = argv.indexOf("-l");
