@@ -52,7 +52,7 @@ export default function Command() {
 
         const errorMessage =
           error instanceof Error ? error.message : String(error);
-        if (!errorMessage.includes("with exit code 1")) {
+        if (!errorMessage.includes("code 1")) {
           // Exit code 1 happens when no results are found; ignore that
           captureException(error);
           await showToast({

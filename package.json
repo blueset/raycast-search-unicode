@@ -74,7 +74,7 @@
       "type": "file",
       "required": false,
       "description": "Path to the `uni` executable when 'Custom Path' is selected as execution source.",
-      "default": ""
+      "default": "/"
     }
   ],
   "dependencies": {

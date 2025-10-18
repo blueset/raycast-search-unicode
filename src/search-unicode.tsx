@@ -51,7 +51,7 @@ export default function Command() {
           console.error("Error during search:", error);
           const errorMessage =
             error instanceof Error ? error.message : String(error);
-          if (!errorMessage.includes("with exit code 1")) {
+          if (!errorMessage.includes("code 1")) {
             // Exit code 1 happens when no results are found; ignore that
             await showToast({
               style: Toast.Style.Failure,
@@ -60,7 +60,7 @@ export default function Command() {
             });
           }
         }
-        if (searchText.match(/((U\+)?[0-9A-Fa-f]+ ?)+$/)) {
+        if (searchText.match(/^((U\+)?[0-9A-Fa-f]+ ?)+$/)) {
           try {
             const hexOutput = await run([
               "uni",
