@@ -168,7 +168,6 @@ class FileSystem {
       this.output += this.outputBuf.substring(0, nl);
       this.outputBuf = this.outputBuf.substring(nl + 1);
     }
-    // console.log("writeSync", fd, "buf.length", buf.length, "outputBuf.length", this.outputBuf.length);
     return buf.length;
   }
   write(

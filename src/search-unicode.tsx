@@ -32,7 +32,6 @@ export default function Command() {
     setIsLoading(true);
     timerRef.current = setTimeout(async () => {
       try {
-        console.log("Searching for:", searchText);
         let output: Entry[] = [];
         try {
           const searchOutput = await run([
@@ -63,7 +62,6 @@ export default function Command() {
         }
         if (searchText.match(/((U\+)?[0-9A-Fa-f]+ ?)+$/)) {
           try {
-            console.log("Performing hex search for:", searchText);
             const hexOutput = await run([
               "uni",
               "print",

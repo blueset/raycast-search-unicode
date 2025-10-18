@@ -3,8 +3,6 @@ import type { Entry } from "./types";
 import { getCharSvg } from "./utils";
 
 export function ItemDetails({ item }: { item: Entry }) {
-  // console.log("rendering markdown:\n", `# ${item.name}\n\n![${item.name}](${getCharSvg(item, 300)})`);
-
   const metadata: Array<React.ReactElement | "separator"> = [];
 
   // Aliases section

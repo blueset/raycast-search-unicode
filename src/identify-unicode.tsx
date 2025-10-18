@@ -35,7 +35,6 @@ export default function Command() {
     setIsLoading(true);
     timerRef.current = setTimeout(async () => {
       try {
-        console.log("Searching for:", searchText);
         const output = await run([
           "uni",
           "identify",
@@ -82,7 +81,7 @@ export default function Command() {
       {data?.length > 0 && showEncodingsPref && (
         <List.Section title="Encodings">
           <List.Item
-            title="Hex sequence in Unicode"
+            title="Hex Sequence in Unicode"
             subtitle={data ? data.map((item) => item.hex).join(" ") : ""}
             actions={
               <ActionPanel>
@@ -94,7 +93,7 @@ export default function Command() {
             }
           />
           <List.Item
-            title="Decimal sequence in Unicode"
+            title="Decimal Sequence in Unicode"
             subtitle={data ? data.map((item) => item.dec).join(" ") : ""}
             actions={
               <ActionPanel>
@@ -106,7 +105,7 @@ export default function Command() {
             }
           />
           <List.Item
-            title="UTF-8 sequence"
+            title="UTF-8 Sequence"
             subtitle={data ? data.map((item) => item.utf8).join(" ") : ""}
             actions={
               <ActionPanel>

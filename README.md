@@ -63,9 +63,10 @@ You can choose to use one of the following options to run the `uni` executable:
 
 This workflow depends on resources from:
 
-- [arp242/uni] 2.8.0 with Unicode 15.1
+- [arp242/uni] 2.8.0 with Unicode 15.1, forked to [blueset/uni] for WebAssembly performance improvements.
 
 [arp242/uni]: https://github.com/arp242/uni
+[blueset/uni]: https://github.com/blueset/uni/tree/fork
 
 ## License
 

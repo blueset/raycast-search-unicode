@@ -4,6 +4,7 @@ import { getPreferenceValues } from "@raycast/api";
 import { Entry, PreferenceValues } from "./types";
 import { spawn } from "node:child_process";
 import os from "node:os";
+import { ensureBinaryAvailable } from "./binary";
 
 const MAX_RESULTS = 100;
 
@@ -20,32 +21,19 @@ const BINARIES: Record<string, Record<string, string>> = {
 
 export async function run(argv: string[]): Promise<Entry[]> {
   try {
-    const platform = os.platform();
-    const arch = os.arch();
-    const prefs = getPreferenceValues<PreferenceValues>();
-    let execSource = prefs.execSource;
-    if (execSource === "bundled" && !BINARIES[platform]?.[arch]) {
-      console.log(
-        `No bundled binary available for platform ${platform} and architecture ${arch}, falling back to WASM`,
-      );
-      execSource = "wasm";
-    }
+    const {
+      execSource,
+      wasmBinary,
+      execPath,
+    } = await ensureBinaryAvailable();
 
     if (execSource === "wasm") {
-      return runWasm(argv);
+      return runWasm(wasmBinary, argv);
     } else if (
       execSource === "bundled" ||
       execSource === "path" ||
       execSource === "custom"
     ) {
-      const path =
-        execSource === "path"
-          ? "uni"
-          : execSource === "bundled"
-            ? environment.assetsPath + BINARIES[platform][arch]
-            : execSource === "custom"
-              ? prefs.execPath
-              : "uni";
 
       if (execSource === "path" || execSource === "custom") {
         // -l is a custom argument that limits results, which may not be supported in user-provided binaries
@@ -56,7 +44,7 @@ export async function run(argv: string[]): Promise<Entry[]> {
       }
 
       return new Promise<Entry[]>((resolve, reject) => {
-        const child = spawn(path, argv.slice(1));
+        const child = spawn(execPath, argv.slice(1));
         let stdout = "";
         let stderr = "";
 
@@ -64,7 +52,6 @@ export async function run(argv: string[]): Promise<Entry[]> {
           stdout += data.toString();
           const lines = stdout.split(/\r?\n/);
           if (lines.length > MAX_RESULTS) {
-            console.log("Max results reached, pausing stdout");
             try {
               child.stdout.pause();
             } catch {
@@ -90,7 +77,6 @@ export async function run(argv: string[]): Promise<Entry[]> {
         });
 
         child.on("close", (code) => {
-          console.log(`Process closed with code ${code}`);
           if (code !== 0) {
             reject(
               new Error(
@@ -108,7 +94,6 @@ export async function run(argv: string[]): Promise<Entry[]> {
           try {
             let lines = stdout.split(/\r?\n/);
             if (lines.length > MAX_RESULTS) {
-              console.log("Truncating output to max results for JSON parsing");
               lines = lines.slice(0, MAX_RESULTS);
               lines[lines.length - 1] = lines[lines.length - 1].replace(
                 /\},?$/,
