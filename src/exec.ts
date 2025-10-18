@@ -1,23 +1,10 @@
 import { run as runWasm } from "./load-wasm";
-import { environment } from "@raycast/api";
-import { getPreferenceValues } from "@raycast/api";
-import { Entry, PreferenceValues } from "./types";
+import { Entry } from "./types";
 import { spawn } from "node:child_process";
-import os from "node:os";
 import { ensureBinaryAvailable } from "./binary";
 
 const MAX_RESULTS = 100;
 
-const BINARIES: Record<string, Record<string, string>> = {
-  darwin: {
-    x64: "uni-eb04126-darwin-amd64",
-    arm64: "uni-eb04126-darwin-arm64",
-  },
-  windows: {
-    x64: "uni-eb04126-windows-amd64.exe",
-    arm64: "uni-eb04126-windows-arm64.exe",
-  },
-};
 
 export async function run(argv: string[]): Promise<Entry[]> {
   try {
