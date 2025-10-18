@@ -173,7 +173,7 @@ export function ItemDetails({ item }: { item: Entry }) {
 
         // Skip consecutive separators
         const lastItem = acc[acc.length - 1];
-        if (lastItem?.key?.startsWith("separator")) return acc;
+        if (lastItem && typeof lastItem === "object" && "key" in lastItem && lastItem?.key?.startsWith("separator")) return acc;
 
         acc.push(<Detail.Metadata.Separator key={`separator-${index}`} />);
       } else {
@@ -188,7 +188,7 @@ export function ItemDetails({ item }: { item: Entry }) {
     <Detail
       navigationTitle={item.name}
       markdown={`# ${item.name}\n\n![${item.name}](${getCharSvg(item, [300, 200])})`}
-      metadata={<Detail.Metadata>{trimmedMetadata}</Detail.Metadata>}
+      metadata={<Detail.Metadata><>{trimmedMetadata}</></Detail.Metadata>}
     />
   );
 }
