@@ -68,8 +68,8 @@ export async function run(argv: string[]): Promise<Entry[]> {
           if (code !== 0) {
             reject(
               new Error(
-                `Process exited with code ${code}${stderr ? `: ${stderr}` : ""}`
-              )
+                `Process exited with code ${code}${stderr ? `: ${stderr}` : ""}`,
+              ),
             );
             return;
           }
@@ -85,7 +85,7 @@ export async function run(argv: string[]): Promise<Entry[]> {
               lines = lines.slice(0, MAX_RESULTS);
               lines[lines.length - 1] = lines[lines.length - 1].replace(
                 /\},?$/,
-                "}]"
+                "}]",
               );
             }
             const entries: Entry[] = JSON.parse(lines.join("\n"));
@@ -93,8 +93,8 @@ export async function run(argv: string[]): Promise<Entry[]> {
           } catch (error) {
             reject(
               new Error(
-                `Failed to parse JSON output: ${error instanceof Error ? error.message : String(error)}`
-              )
+                `Failed to parse JSON output: ${error instanceof Error ? error.message : String(error)}`,
+              ),
             );
           }
         });

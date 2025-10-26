@@ -142,7 +142,7 @@ export default function Command() {
         }
         if (
           searchText.match(
-            new RegExp(`^((${PRINT_PATTERNS.join("|")}) ?)+$`, "i")
+            new RegExp(`^((${PRINT_PATTERNS.join("|")}) ?)+$`, "i"),
           )
         ) {
           try {
