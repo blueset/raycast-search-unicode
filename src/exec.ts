@@ -2,10 +2,17 @@ import { run as runWasm } from "./load-wasm";
 import { Entry } from "./types";
 import { spawn } from "node:child_process";
 import { ensureBinaryAvailable } from "./binary";
+import { getPreferenceValues } from "@raycast/api";
 
-const MAX_RESULTS = 100;
+function parseLimit(): number {
+  const preferences = getPreferenceValues<Preferences>();
+  const limitStr = preferences.searchResultLimitStr;
+  const limit = parseInt(limitStr || "100", 10);
+  return isNaN(limit) || limit <= 0 ? 100 : limit;
+}
 
 export async function run(argv: string[]): Promise<Entry[]> {
+  const MAX_RESULTS = parseLimit();
   try {
     const binaryInfo = await ensureBinaryAvailable();
 
@@ -16,14 +23,11 @@ export async function run(argv: string[]): Promise<Entry[]> {
       binaryInfo.execSource === "path" ||
       binaryInfo.execSource === "custom"
     ) {
-      if (
-        binaryInfo.execSource === "path" ||
-        binaryInfo.execSource === "custom"
-      ) {
+      if (binaryInfo.execSource === "bundled") {
         // -l is a custom argument that limits results, which may not be supported in user-provided binaries
-        const index = argv.indexOf("-l");
-        if (index !== -1) {
-          argv.splice(index, 2);
+        const index = argv.indexOf("-as");
+        if (index >= 0) {
+          argv.splice(index, 0, "-l", MAX_RESULTS.toString());
         }
       }
 
@@ -64,8 +68,8 @@ export async function run(argv: string[]): Promise<Entry[]> {
           if (code !== 0) {
             reject(
               new Error(
-                `Process exited with code ${code}${stderr ? `: ${stderr}` : ""}`,
-              ),
+                `Process exited with code ${code}${stderr ? `: ${stderr}` : ""}`
+              )
             );
             return;
           }
@@ -81,7 +85,7 @@ export async function run(argv: string[]): Promise<Entry[]> {
               lines = lines.slice(0, MAX_RESULTS);
               lines[lines.length - 1] = lines[lines.length - 1].replace(
                 /\},?$/,
-                "}]",
+                "}]"
               );
             }
             const entries: Entry[] = JSON.parse(lines.join("\n"));
@@ -89,8 +93,8 @@ export async function run(argv: string[]): Promise<Entry[]> {
           } catch (error) {
             reject(
               new Error(
-                `Failed to parse JSON output: ${error instanceof Error ? error.message : String(error)}`,
-              ),
+                `Failed to parse JSON output: ${error instanceof Error ? error.message : String(error)}`
+              )
             );
           }
         });
