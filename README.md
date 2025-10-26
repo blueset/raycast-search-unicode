@@ -8,6 +8,7 @@ Search Unicode is a Raycast extension to lookup and reverse lookup Unicode chara
 ## Install
 
 [Pending Raycast Store submission review](https://github.com/raycast/extensions/pull/22271)
+[Pending Raycast Store submission review](https://github.com/raycast/extensions/pull/22271)
 
 ## Usage
 
@@ -54,6 +55,10 @@ You can choose to use one of the following options to run the `uni` executable:
 - **Bundled Native** (default on Windows): This option uses a native version of `uni` bundled with the plugin. This option does not require any installation, and is faster than the WASM version. However, it might not work on macOS due to developer certificate issues.
 - **System Installed**: This option uses a system-installed version of `uni`. You need to install `uni` manually using a package manager like Homebrew (macOS) or Scoop/Chocolatey (Windows).
 - **Custom Path**: This option allows you to specify a custom path to the `uni` executable.
+
+#### Maximum number of results
+
+You can set the maximum number of results to be returned by the plugin. The default is 100.
 
 #### Maximum number of results
 
