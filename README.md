@@ -8,7 +8,6 @@ Search Unicode is a Raycast extension to lookup and reverse lookup Unicode chara
 ## Install
 
 [Pending Raycast Store submission review](https://github.com/raycast/extensions/pull/22271)
-[Pending Raycast Store submission review](https://github.com/raycast/extensions/pull/22271)
 
 ## Usage
 
