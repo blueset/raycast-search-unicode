@@ -90,7 +90,6 @@
     }
   ],
   "dependencies": {
-    "@eana/uni": "^0.0.1-dev.d8cc2f6",
     "@raycast/api": "^1.103.3",
     "@raycast/utils": "^2.2.1",
     "adm-zip": "^0.5.16"
