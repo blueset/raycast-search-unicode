@@ -50,6 +50,7 @@ Search emoji is omitted in this plugin as Raycast has built-in emoji search.
 
 You can choose to use one of the following options to run the `uni` executable:
 
+- **Node.js Native Binding**: This option uses Node.js native bindings of `uni`. This option has relatively fast performance, but with potentially limited platform support (e.g. Windows ARM64 is not supported).
 - **WebAssembly (WASM)** (default on macOS): This option uses a WebAssembly version of `uni` bundled with the plugin. This option does not require any installation, but may be slower than the native version.
 - **Bundled Native** (default on Windows): This option uses a native version of `uni` bundled with the plugin. This option does not require any installation, and is faster than the WASM version. However, it might not work on macOS due to developer certificate issues.
 - **System Installed**: This option uses a system-installed version of `uni`. You need to install `uni` manually using a package manager like Homebrew (macOS) or Scoop/Chocolatey (Windows).
@@ -121,7 +122,7 @@ You can combine multiple search patterns in a single query by separating them wi
 
 This workflow depends on resources from:
 
-- [arp242/uni] 2.8.0 with Unicode 15.1, forked to [blueset/uni] for WebAssembly performance improvements.
+- [arp242/uni] 2.8.0 with Unicode 15.1, forked to [blueset/uni] for WebAssembly and Node.js bindings.
 
 [arp242/uni]: https://github.com/arp242/uni
 [blueset/uni]: https://github.com/blueset/uni/tree/fork

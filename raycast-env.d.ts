@@ -9,7 +9,7 @@
 
 type ExtensionPreferences = {
   /** Execution Source - Specify how the `uni` utility is executed. */
-  "execSource": "wasm" | "bundled" | "path" | "custom",
+  "execSource": "node" | "wasm" | "bundled" | "path" | "custom",
   /** Executable Path - Path to the `uni` executable when “Custom Path” is selected as execution source. */
   "execPath": string,
   /** Search results limit - Maximum number of items shown in the list. The lower the number of shown items is, the faster they’ll be retrieved. Defaults to 100. */

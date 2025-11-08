@@ -99,6 +99,15 @@ export async function run(argv: string[]): Promise<Entry[]> {
           }
         });
       });
+    } else if (binaryInfo.execSource === "node") {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const nodeExec = require(binaryInfo.execPath).exec;
+      const index = argv.indexOf("-as");
+      if (index >= 0) {
+        argv.splice(index, 0, "-l", MAX_RESULTS.toString());
+      }
+      const nodeOutput = nodeExec(JSON.stringify(argv));
+      return JSON.parse(nodeOutput);
     }
     throw new Error("Unsupported execution source");
   } catch (error) {
