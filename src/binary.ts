@@ -127,7 +127,7 @@ export async function ensureBinaryAvailable(): Promise<BinaryInfo> {
     let filename: string;
 
     if (execSource === "node") {
-      binaryInfo = BINARIES[`node${platform}`][arch];
+      binaryInfo = BINARIES[platform][arch];
       filename = path.basename(binaryInfo.url).replace(/\.zip$/, ".node");
     } else if (execSource === "bundled") {
       binaryInfo = BINARIES[platform][arch];
@@ -142,6 +142,7 @@ export async function ensureBinaryAvailable(): Promise<BinaryInfo> {
 
     // 2. Check if the binary already exists
     try {
+      console.log(`Checking existence of binary at ${targetPath}`);
       await fs.access(targetPath);
       // File exists, skip download
     } catch {
@@ -181,7 +182,6 @@ export async function ensureBinaryAvailable(): Promise<BinaryInfo> {
             entryBasename === "@eana+uni.node"
               ? targetPath
               : path.join(environment.supportPath, entryBasename);
-
           await fs.writeFile(extractPath, entry.getData());
         }
       } else {

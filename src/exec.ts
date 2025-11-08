@@ -4,6 +4,8 @@ import { spawn } from "node:child_process";
 import { ensureBinaryAvailable } from "./binary";
 import { getPreferenceValues } from "@raycast/api";
 
+let nodeExec: ((args: string) => string) | undefined;
+
 function parseLimit(): number {
   const preferences = getPreferenceValues<Preferences>();
   const limitStr = preferences.searchResultLimitStr;
@@ -100,13 +102,18 @@ export async function run(argv: string[]): Promise<Entry[]> {
         });
       });
     } else if (binaryInfo.execSource === "node") {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const nodeExec = require(binaryInfo.execPath).exec;
+      if (!nodeExec) {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        nodeExec = require(binaryInfo.execPath).exec;
+      }
       const index = argv.indexOf("-as");
       if (index >= 0) {
         argv.splice(index, 0, "-l", MAX_RESULTS.toString());
       }
-      const nodeOutput = nodeExec(JSON.stringify(argv));
+      const nodeOutput = nodeExec!(JSON.stringify(argv));
+      if (!nodeOutput) {
+        return [];
+      }
       return JSON.parse(nodeOutput);
     }
     throw new Error("Unsupported execution source");
